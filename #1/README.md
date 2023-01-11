@@ -283,3 +283,29 @@ VALUES (id, id2, link);
 END;
 $$ LANGUAGE plpgsql
 ~~~
+
+
+14. Измените схему БД так, чтобы в БД можно было хранить время актуальности данных человека (выполнить также, как п.12).
+
+Создаем новый столбец
+~~~plpgsql
+ALTER TABLE people ADD COLUMN update_date date default now()
+~~~
+
+15. Напишите процедуру, которая позволяет актуализировать рост и вес человека.
+
+~~~plpgsql
+CREATE PROCEDURE height_weight(id1 int, height1 numeric, weight1 numeric) AS $$
+BEGIN
+	UPDATE people SET growth = height1 WHERE id = id1;
+	UPDATE people SET weight = weight1 WHERE id = id1;
+	UPDATE people SET new_date = now() WHERE id = id1;
+END;
+$$ LANGUAGE plpgsql
+~~~
+Вызов
+~~~plpgsql
+CALL height_weight2(1, 163, 47)
+~~~
+
+![1](14.png)
